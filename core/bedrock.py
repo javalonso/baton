@@ -16,7 +16,10 @@ valid payment instrument, and an accepted model agreement per model
 `AccessDeniedException: INVALID_PAYMENT_INSTRUMENT`, which names only the second.
 
 Note on `max_tokens`: thinking is on by default for Claude Opus 5, and the budget covers
-thinking and response together. Too small a budget returns a response with no text at all.
+thinking *and* the response together. This does not fail loudly. At 8000 the watch agent
+reliably thought, wrote "I'll sweep now", and ended its turn having called no tools — a
+plausible-looking answer that did nothing. At 32000 the same code works every time. When an
+agent on this model appears lazy, suspect the budget before the prompt.
 """
 
 from __future__ import annotations
@@ -40,18 +43,10 @@ def _session() -> boto3.Session:
 
 
 def intake_model(**overrides) -> BedrockModel:
-    return BedrockModel(
-        boto_session=_session(),
-        model_id=INTAKE_MODEL_ID,
-        max_tokens=2000,
-        **overrides,
-    )
+    config = {"model_id": INTAKE_MODEL_ID, "max_tokens": 2000} | overrides
+    return BedrockModel(boto_session=_session(), **config)
 
 
 def reasoning_model(**overrides) -> BedrockModel:
-    return BedrockModel(
-        boto_session=_session(),
-        model_id=REASONING_MODEL_ID,
-        max_tokens=8000,
-        **overrides,
-    )
+    config = {"model_id": REASONING_MODEL_ID, "max_tokens": 32000} | overrides
+    return BedrockModel(boto_session=_session(), **config)
