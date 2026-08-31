@@ -54,7 +54,7 @@ when there is a real decision to make:
 
 ## Architecture
 
-See [`docs/architecture.md`](docs/architecture.md) *(diagram in progress)*.
+See [`docs/spec.md`](docs/spec.md) for the product spec, and [`docs/architecture.md`](docs/architecture.md) for the diagram *(in progress)*.
 
 ```
 baton/
