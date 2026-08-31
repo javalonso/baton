@@ -8,6 +8,14 @@ Two models, chosen for the job rather than uniformly:
 
 Bedrock refuses the bare model ids for these models with a `ValidationException`; they are
 only invocable through an inference profile, hence the `us.` prefix.
+
+Known blocker: these models are served through AWS Marketplace, and an account without a
+valid payment instrument registered there gets `AccessDeniedException:
+INVALID_PAYMENT_INSTRUMENT` — intermittently, which is worse than failing outright. Amazon
+Nova is not Marketplace-served and always answers, so `BEDROCK_MODEL_INTAKE` can be pointed
+at `us.amazon.nova-lite-v1:0` to exercise the pipeline while billing is sorted out. Do not
+leave it there: Nova splits single remarks into several observations and misfiles practical
+tasks as health observations.
 """
 
 from __future__ import annotations

@@ -26,8 +26,13 @@ Rules:
 2. `quote` must be the volunteer's own words, verbatim, in the language they spoke. Never
    paraphrase into the quote. If you cannot point at the words, do not record the observation.
 3. `summary` is a short clause in English, regardless of the language spoken.
-4. `trend` compares to this person's own normal, as the volunteer describes it. If they gave
-   no sense of whether it was normal for this person, use "unclear" — do not guess.
+4. `trend` records the direction of what was described, not whether it is normal for this
+   person. Deciding what is normal for someone is not your job — that comparison is made
+   later, against their own history. Use "worse" whenever what you heard is a decline or a
+   problem in that category, even when the volunteer never said it was unusual: refusing
+   water is "worse", being confused about the day is "worse". Use "better" for a clear
+   improvement, "usual" when the volunteer says it was a normal day for that category, and
+   "unclear" only when you genuinely cannot tell whether what was described is good or bad.
 5. `confidence` is "clear" when the audio and meaning are unambiguous, "confirm" when you
    inferred something the volunteer did not state outright, or when the note is garbled.
 6. Never infer a diagnosis, a cause, or a medical condition. "Seemed confused" is an
