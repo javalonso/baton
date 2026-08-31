@@ -1,0 +1,212 @@
+<!-- @dsCard group="Components" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baton — Observation chips</title>
+<style>
+/* Baton design tokens.
+ * Every color pair used for text is verified at 4.5:1 or better; every interactive
+ * boundary at 3:1 or better. See docs/design-principles.md.
+ */
+
+:root {
+  /* Surfaces */
+  --bg: #F6F8F5;
+  --surface: #FFFFFF;
+  --surface-sunken: #EEF2EC;
+
+  /* Borders. `border` is decorative; `border-strong` is for interactive boundaries (3:1). */
+  --border: #D9E0D8;
+  --border-strong: #7F8C82;
+
+  /* Text */
+  --text: #141A16;        /* 17.7:1 on surface */
+  --text-muted: #4C5A51;  /* 7.3:1 on surface */
+
+  /* Sage — primary action, calm states */
+  --sage: #2F6B4F;        /* 6.3:1 on surface */
+  --sage-hover: #255741;
+  --sage-soft: #E3EDE6;
+  --on-sage: #FFFFFF;     /* 6.3:1 on sage */
+
+  /* Amber — attention, not alarm */
+  --amber: #8A5A05;       /* 5.9:1 on surface, for text */
+  --amber-fill: #F0A63C;  /* fill only; pair with --text at 8.6:1 */
+  --amber-soft: #FCF0DC;
+
+  /* Urgent — the scarcest resource in the system. One thing at a time. */
+  --urgent: #A3231C;      /* 7.5:1 on surface */
+  --urgent-soft: #FBE9E7;
+  --on-urgent: #FFFFFF;   /* 7.5:1 on urgent */
+
+  /* Type scale */
+  --font-sans: "Söhne", "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --size-xs: 0.8125rem;   /* 13px — metadata only */
+  --size-sm: 0.9375rem;   /* 15px — portal secondary */
+  --size-md: 1.0625rem;   /* 17px — portal body */
+  --size-lg: 1.125rem;    /* 18px — volunteer app body, the floor in the field */
+  --size-xl: 1.375rem;    /* 22px */
+  --size-2xl: 1.75rem;    /* 28px */
+  --leading-tight: 1.25;
+  --leading-body: 1.55;
+
+  /* Spacing — 4px base */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Targets — above the WCAG floor on purpose. See docs/design-principles.md. */
+  --target-field: 56px;   /* volunteer app, one-handed, outdoors */
+  --target-portal: 44px;
+
+  /* Motion — structural only */
+  --dur-fast: 120ms;
+  --dur: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  --shadow-card: 0 1px 2px rgba(20, 26, 22, 0.06), 0 1px 3px rgba(20, 26, 22, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111512;
+    --surface: #1A201C;
+    --surface-sunken: #0C100D;
+    --border: #2E362F;
+    --border-strong: #74837A;
+    --text: #E9EFE9;
+    --text-muted: #A3B0A6;
+    --sage: #7CC49A;
+    --sage-hover: #94D3AC;
+    --sage-soft: #1E2C24;
+    --on-sage: #111512;
+    --amber: #F0B25C;
+    --amber-fill: #B77A18;
+    --amber-soft: #2A2115;
+    --urgent: #F2938C;
+    --urgent-soft: #2C1917;
+    --on-urgent: #111512;
+    --shadow-card: none;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #111512;
+  --surface: #1A201C;
+  --surface-sunken: #0C100D;
+  --border: #2E362F;
+  --border-strong: #74837A;
+  --text: #E9EFE9;
+  --text-muted: #A3B0A6;
+  --sage: #7CC49A;
+  --sage-hover: #94D3AC;
+  --sage-soft: #1E2C24;
+  --on-sage: #111512;
+  --amber: #F0B25C;
+  --amber-fill: #B77A18;
+  --amber-soft: #2A2115;
+  --urgent: #F2938C;
+  --urgent-soft: #2C1917;
+  --on-urgent: #111512;
+  --shadow-card: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur: 1ms;
+  }
+}
+
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: var(--space-8);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--size-md);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+}
+h1 { font-size: var(--size-xl); line-height: var(--leading-tight); margin: 0 0 var(--space-2); }
+.hint { color: var(--text-muted); font-size: var(--size-sm); margin: 0 0 var(--space-6); max-width: 62ch; }
+.row { display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: flex-start; }
+.stack { display: flex; flex-direction: column; gap: var(--space-4); }
+.label { font-size: var(--size-xs); color: var(--text-muted); text-transform: uppercase;
+         letter-spacing: 0.06em; margin-bottom: var(--space-2); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card); padding: var(--space-4); }
+
+
+.chips { display: flex; flex-direction: column; gap: var(--space-2); }
+.chip { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2);
+        min-height: var(--target-field); width: 100%; text-align: left;
+        padding: var(--space-3) var(--space-4); border-radius: var(--radius-md);
+        border: 1px solid var(--border-strong); background: var(--surface);
+        color: var(--text); font-family: var(--font-sans); font-size: var(--size-lg);
+        cursor: pointer; transition: border-color var(--dur) var(--ease); }
+.chip:hover { border-color: var(--sage); }
+.chip:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+.chip--check { background: var(--amber-soft); border-color: var(--amber); }
+.chip-cat { font-family: var(--font-mono); font-size: var(--size-xs); color: var(--text-muted);
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            padding: 2px 6px; flex: none; }
+.chip-flag { font-size: var(--size-xs); color: var(--amber); font-weight: 600; margin-left: auto; }
+.chip-actions { display: flex; gap: var(--space-3); margin-top: var(--space-6); }
+.btn { min-height: var(--target-field); padding: 0 var(--space-6); border-radius: var(--radius-pill);
+       font-family: var(--font-sans); font-size: var(--size-lg); font-weight: 600; cursor: pointer;
+       border: 1px solid transparent; }
+.btn--primary { background: var(--sage); color: var(--on-sage); }
+.btn--primary:hover { background: var(--sage-hover); }
+.btn--ghost { background: transparent; color: var(--text); border-color: var(--border-strong); }
+.btn:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+
+</style>
+</head>
+<body>
+<h1>Observation chips</h1>
+<p class="hint">The intent-preview pattern. After a voice note, the agent shows what it understood before anything is written. The volunteer taps to correct — never types. Anything the agent is less sure of is marked in words, not as a decimal.</p>
+
+<div class="card" style="max-width: 560px;">
+  <p style="margin: 0 0 var(--space-4); font-size: var(--size-lg);">
+    Here is what I heard. Tap anything that is wrong.
+  </p>
+  <div class="chips"><button class="chip ">
+      <span class="chip-cat">food</span>Ate normally
+      
+    </button><button class="chip ">
+      <span class="chip-cat">sleep</span>Slept poorly
+      
+    </button><button class="chip chip--check">
+      <span class="chip-cat">orientation</span>Seemed confused about the day
+      <span class="chip-flag">worth confirming</span>
+    </button><button class="chip chip--check">
+      <span class="chip-cat">medication</span>Losartan — dose increased
+      <span class="chip-flag">worth confirming</span>
+    </button><button class="chip ">
+      <span class="chip-cat">task</span>Kitchen tap still dripping
+      
+    </button></div>
+  <div class="chip-actions">
+    <button class="btn btn--primary">Confirm</button>
+    <button class="btn btn--ghost">Record again</button>
+  </div>
+</div>
+
+</body>
+</html>
