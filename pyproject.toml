@@ -1,5 +1,5 @@
 [project]
-name = "relevo"
+name = "baton"
 version = "0.1.0"
 description = "An AI agent that carries the memory of a community care network"
 requires-python = ">=3.11"

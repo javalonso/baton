@@ -1,11 +1,15 @@
-# Relevo
+# Baton
 
-**An AI agent that carries the memory of a community care network.**
+**The memory that gets passed with the shift.**
+
+An AI agent for community care networks — day centers, parishes, neighborhood volunteer groups —
+that carries what everyone knows about the people they look after, so nothing is lost when a shift
+changes hands.
 
 Built with the [Strands Agents SDK](https://github.com/strands-agents/sdk-python) for the
 [Agents for Humans Hackathon](https://agentsforhumans.devpost.com/) — *Good Neighbor Agents* track.
 
-> ⚠️ **Not a medical device.** Relevo never diagnoses. It notices that a person's routine has
+> ⚠️ **Not a medical device.** Baton never diagnoses. It notices that a person's routine has
 > changed and tells a human coordinator so a professional can decide. All data in this repository
 > is synthetic. This is a hackathon prototype and is not HIPAA-compliant.
 
@@ -29,7 +33,7 @@ Two documented consequences:
 Neither problem is a reminder problem. Both are memory and attention problems, and they scale with
 the number of people the organization serves.
 
-## What Relevo does
+## What Baton does
 
 Five repetitive jobs, absorbed by an agent that runs in the background and only interrupts a human
 when there is a real decision to make:
@@ -53,7 +57,7 @@ when there is a real decision to make:
 See [`docs/architecture.md`](docs/architecture.md) *(diagram in progress)*.
 
 ```
-relevo/
+baton/
 ├── core/     # domain models, repositories (DynamoDB / S3), business logic. No HTTP.
 ├── api/      # FastAPI  →  AWS Lambda + API Gateway. The only surface clients touch.
 ├── agents/   # Strands agents  →  Amazon Bedrock AgentCore Runtime.
