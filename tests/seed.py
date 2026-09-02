@@ -12,10 +12,10 @@ from __future__ import annotations
 
 import json
 import random
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from pathlib import Path
 
-from core.models import Contact, Elder, Medication, Observation, Visit, Volunteer
+from core.models import Contact, Elder, Medication, Observation, Shift, Visit, Volunteer
 from core.vocabulary import Category, Confidence, Trend
 
 SEED = 20260914
@@ -140,6 +140,88 @@ def _profile(prng: random.Random, elder: Elder) -> None:
         )
 
 
+def _roster(
+    prng: random.Random, elders: list[Elder], volunteers: list[Volunteer], visits: list[Visit]
+) -> list[Shift]:
+    """Turn the visit history into a schedule, then punch four holes in it.
+
+    Every visit that happened had a shift behind it, so those are written back as `logged`.
+    The interesting rows are the ones with nothing behind them, and each of the four is
+    placed to land on a different rung of the escalation ladder in `core.roster`:
+
+    * a shift this morning that nobody logged, which is the volunteer's to explain tonight;
+    * one from two days ago, long past the point where asking again is useful;
+    * three unclaimed shifts later this week, which is the group's problem;
+    * one unclaimed at seven tomorrow morning, close enough that waiting is now a decision.
+
+    Its own generator, like `_profile`. The visit history above must not move.
+    """
+    shifts: list[Shift] = []
+    org_id = elders[0].org_id
+
+    for i, visit in enumerate(visits, start=1):
+        shift_id = f"shift-{i:05d}"
+        visit.shift_id = shift_id
+        shifts.append(
+            Shift(
+                id=shift_id,
+                org_id=org_id,
+                elder_id=visit.elder_id,
+                volunteer_id=visit.volunteer_id,
+                scheduled_at=visit.started_at,
+                status="logged",
+            )
+        )
+
+    def without_a_visit_on(day: date) -> list[Elder]:
+        busy = {v.elder_id for v in visits if v.started_at.date() == day}
+        return [e for e in elders if e.id not in busy]
+
+    counter = len(shifts)
+
+    def add(elder_id: str, volunteer_id: str | None, when: datetime, status: str) -> None:
+        nonlocal counter
+        counter += 1
+        shifts.append(
+            Shift(
+                id=f"shift-{counter:05d}",
+                org_id=org_id,
+                elder_id=elder_id,
+                volunteer_id=volunteer_id,
+                scheduled_at=when,
+                status=status,
+            )
+        )
+
+    # Nobody logged this morning. Tonight it is still a question for one person.
+    today_free = without_a_visit_on(TODAY)
+    add(today_free[0].id, volunteers[3].id, datetime.combine(TODAY, time(10, 0)), "scheduled")
+
+    # Two days gone. Asking the same person again is no longer the useful thing to do.
+    stale_day = TODAY - timedelta(days=2)
+    add(
+        without_a_visit_on(stale_day)[0].id,
+        volunteers[6].id,
+        datetime.combine(stale_day, time(11, 30)),
+        "scheduled",
+    )
+
+    # Later this week, nobody has claimed these.
+    for offset in (2, 3, 4):
+        day = TODAY + timedelta(days=offset)
+        add(
+            prng.choice(elders).id,
+            None,
+            datetime.combine(day, time(prng.choice([9, 10, 16, 17]), 0)),
+            "open",
+        )
+
+    # Seven tomorrow morning, still nobody. By tonight this stops being the group's problem.
+    add(elders[7].id, None, datetime.combine(TODAY + timedelta(days=1), time(7, 0)), "open")
+
+    return shifts
+
+
 def _obs(category: Category, summary: str, quote: str, trend: Trend) -> Observation:
     return Observation(
         category=category,
@@ -250,6 +332,8 @@ def build() -> dict:
             day += timedelta(days=1)
         _ = idx
 
+    shifts = _roster(random.Random(SEED + 13), elders, volunteers, visits)
+
     return {
         "generated_for": TODAY.isoformat(),
         "seed": SEED,
@@ -257,6 +341,7 @@ def build() -> dict:
         "elders": [e.model_dump(mode="json") for e in elders],
         "volunteers": [v.model_dump(mode="json") for v in volunteers],
         "visits": [v.model_dump(mode="json") for v in visits],
+        "shifts": [s.model_dump(mode="json") for s in shifts],
     }
 
 
@@ -267,5 +352,5 @@ if __name__ == "__main__":
     print(
         f"wrote {OUT.relative_to(OUT.parents[1])}: "
         f"{len(data['elders'])} elders, {len(data['volunteers'])} volunteers, "
-        f"{len(data['visits'])} visits"
+        f"{len(data['visits'])} visits, {len(data['shifts'])} shifts"
     )

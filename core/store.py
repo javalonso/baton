@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from core.models import Alert, Elder, Visit, Volunteer
+from core.models import Alert, Elder, Shift, Visit, Volunteer
 
 DEFAULT_PATH = Path(__file__).resolve().parents[1] / "data" / "seed.json"
 
@@ -24,12 +24,16 @@ class Store:
         self.elders: list[Elder] = [Elder(**e) for e in raw["elders"]]
         self.volunteers: list[Volunteer] = [Volunteer(**v) for v in raw["volunteers"]]
         self.visits: list[Visit] = [Visit(**v) for v in raw["visits"]]
+        self.shifts: list[Shift] = [Shift(**s) for s in raw.get("shifts", [])]
         self.alerts: list[Alert] = [Alert(**a) for a in raw.get("alerts", [])]
 
     # -- lookups -------------------------------------------------------------
 
     def elder(self, elder_id: str) -> Elder:
         return next(e for e in self.elders if e.id == elder_id)
+
+    def volunteer(self, volunteer_id: str) -> Volunteer:
+        return next(v for v in self.volunteers if v.id == volunteer_id)
 
     def visits_for(self, elder_id: str) -> list[Visit]:
         return sorted(

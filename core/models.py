@@ -99,8 +99,24 @@ class Volunteer(BaseModel):
     active: bool = True
 
 
+class Shift(BaseModel):
+    """A promise that somebody will be there.
+
+    `volunteer_id` is nullable because an unclaimed shift is the most important row in this
+    table. A schedule that can only describe assigned work cannot describe the hole.
+    """
+
+    id: str
+    org_id: str
+    elder_id: str
+    volunteer_id: str | None = None
+    scheduled_at: datetime
+    status: Literal["scheduled", "logged", "open", "claimed"] = "scheduled"
+
+
 class Visit(BaseModel):
     id: str
+    shift_id: str | None = None
     elder_id: str
     volunteer_id: str
     started_at: datetime
@@ -127,6 +143,20 @@ class AlertEvidence(BaseModel):
     volunteer_name: str
     observed_at: datetime
     category: Category
+
+
+class Message(BaseModel):
+    """Something Baton wants to say, and who it is for.
+
+    `to` is not decoration. It is the escalation rung, and the rung is decided in code before
+    the model is asked to write anything. See `core.roster`.
+    """
+
+    to: Literal["volunteer", "group", "coordinator"]
+    recipient: str = ""
+    body: str
+    about_shift: str | None = None
+    written_by_model: bool = True
 
 
 class Brief(BaseModel):
