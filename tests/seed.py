@@ -15,7 +15,7 @@ import random
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-from core.models import Elder, Observation, Visit, Volunteer
+from core.models import Contact, Elder, Medication, Observation, Visit, Volunteer
 from core.vocabulary import Category, Confidence, Trend
 
 SEED = 20260914
@@ -73,6 +73,73 @@ WORSE = {
 }
 
 
+# What each condition is usually treated with. Deriving medication from the condition keeps
+# the record coherent: a handoff sheet listing a blood-pressure tablet for someone with no
+# blood-pressure entry is the kind of detail that costs a reader their trust in the page.
+TREATMENT = {
+    "hypertension": ("Losartán", "50 mg", "una al día por la mañana"),
+    "type 2 diabetes": ("Metformina", "850 mg", "con la comida principal"),
+    "arthritis": ("Paracetamol", "500 mg", "cuando le duele, máximo tres al día"),
+}
+
+# How to be with this person. Written by whoever knows them, never generated. These are the
+# lines that do not exist anywhere today except in one volunteer's memory.
+COMMUNICATION = [
+    "Oye mejor del lado derecho. Siéntate de ese lado y háblale despacio, no más fuerte.",
+    "Le calma la radio en la cocina. Si está inquieta, ponla antes de hablarle.",
+    "No le gusta que le hablen como a una niña. Trátala de usted.",
+    "Se pone nervioso con gente nueva. Di tu nombre al entrar y otra vez al sentarte.",
+    "Prefiere que le avisen antes de tocarla. Pregunta antes de ayudarla a levantarse.",
+    "Tarda en encontrar las palabras. No las completes por él, espera.",
+]
+
+RELATIONSHIPS = ["hija", "hijo", "sobrina", "nieto", "vecina", "hermana"]
+
+# Kept apart from `FIRST` so a relative never shares a first name with somebody the network
+# looks after. On a handoff sheet, "Rafael Ibarra (hijo)" next to a Rafael on the roster is
+# a second of doubt for a reader who has none to spare.
+FAMILY = ["Alma", "Bernardo", "Cristina", "Damián", "Elvira", "Fabián", "Gabriela", "Héctor",
+          "Irene", "Joaquín", "Karina", "Leonel", "Mariana", "Nadia", "Óscar", "Patricia",
+          "Quirino", "Rebeca", "Silvia", "Teodoro", "Ursula", "Valentín", "Ximena", "Yolanda"]
+
+
+def _profile(prng: random.Random, elder: Elder) -> None:
+    """Fill in the parts of a record that a handoff sheet needs and a visit note never has.
+
+    Deliberately driven by its own generator: the visit history above must not shift because
+    this was added, or every number already published about the dataset stops being true.
+    """
+    family = prng.choice(RELATIONSHIPS)
+    elder.contacts = [
+        Contact(
+            name=f"{prng.choice(FAMILY)} {elder.name.split()[-1]}",
+            relationship=family,
+            phone=f"55 {prng.randint(1000, 9999)} {prng.randint(1000, 9999)}",
+        )
+    ]
+    elder.decision_maker = f"{elder.contacts[0].name} ({family})"
+    elder.communication_notes = prng.choice(COMMUNICATION)
+
+    if prng.random() < 0.25:
+        elder.allergies = [prng.choice(["penicilina", "sulfas", "mariscos"])]
+
+    for condition in elder.conditions:
+        treatment = TREATMENT.get(condition)
+        if treatment is None:
+            continue
+        name, dose, schedule = treatment
+        prescribed = TODAY - timedelta(days=prng.randint(20, 88))
+        elder.medications.append(
+            Medication(
+                name=name,
+                dose=dose,
+                schedule=schedule,
+                prescribed_at=prescribed,
+                refill_due=prescribed + timedelta(days=90),
+            )
+        )
+
+
 def _obs(category: Category, summary: str, quote: str, trend: Trend) -> Observation:
     return Observation(
         category=category,
@@ -110,6 +177,11 @@ def build() -> dict:
         )
         for i in range(24)
     ]
+    # Its own generator, on purpose. See `_profile`.
+    prng = random.Random(SEED + 7)
+    for elder in elders:
+        _profile(prng, elder)
+
     volunteers = [
         Volunteer(id=f"vol-{i + 1:02d}", org_id=org_id, name=name, locale="es" if i % 3 else "en")
         for i, name in enumerate(VOLUNTEERS)

@@ -48,6 +48,21 @@ class Contact(BaseModel):
     phone: str
 
 
+class Medication(BaseModel):
+    """What someone takes, and when the prescription runs out.
+
+    `refill_due` is derived from the date it was prescribed rather than remembered by
+    whoever happened to be there. Running out of a medication is the most preventable
+    emergency in this product, and it is always somebody's memory that fails first.
+    """
+
+    name: str
+    dose: str = ""
+    schedule: str = ""
+    prescribed_at: date | None = None
+    refill_due: date | None = None
+
+
 class Elder(BaseModel):
     id: str
     org_id: str
@@ -57,8 +72,22 @@ class Elder(BaseModel):
     contacts: list[Contact] = Field(default_factory=list)
     conditions: list[str] = Field(default_factory=list)
     allergies: list[str] = Field(default_factory=list)
+    medications: list[Medication] = Field(default_factory=list)
     communication_notes: str = ""
     decision_maker: str = ""
+
+    def written_down(self) -> list[str]:
+        """Every clinical word already on this person's record.
+
+        The brief agent is allowed to repeat these and nothing else. See `core.safety`.
+        """
+        return [
+            *self.conditions,
+            *self.allergies,
+            *(m.name for m in self.medications),
+            *(m.schedule for m in self.medications),
+            self.communication_notes,
+        ]
 
 
 class Volunteer(BaseModel):
@@ -98,6 +127,33 @@ class AlertEvidence(BaseModel):
     volunteer_name: str
     observed_at: datetime
     category: Category
+
+
+class Brief(BaseModel):
+    """The three things the next person needs, in prose.
+
+    Three fields and no more. A brief that runs long is a brief nobody reads standing on a
+    doorstep, and everything factual belongs on the sheet rather than in the prose.
+    """
+
+    elder_id: str
+    locale: Locale = "es"
+    since_last_visit: str = ""
+    watch_for: str = ""
+    how_to_be_with_them: str = ""
+    generated_at: datetime | None = None
+    written_by_model: bool = True
+
+
+class HandoffSheet(BaseModel):
+    """One page for the next shift, or for whoever is asked questions at a hospital."""
+
+    id: str
+    elder_id: str
+    generated_at: datetime
+    locale: Locale = "es"
+    brief: Brief
+    pdf_key: str | None = None
 
 
 class Alert(BaseModel):

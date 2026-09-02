@@ -17,3 +17,6 @@ node_modules/
 .aws-sam/
 cdk.out/
 samconfig.toml
+
+# Generated handoff sheets. The agent writes these; the repo does not carry them.
+data/handoffs/

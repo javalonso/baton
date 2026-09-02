@@ -13,14 +13,36 @@
    "name": "Carmen Ibarra",
    "dob": null,
    "address": "Calle Ibarra 115",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Bernardo Ibarra",
+     "relationship": "hijo",
+     "phone": "55 4120 2274"
+    }
+   ],
    "conditions": [
     "arthritis",
     "hypertension"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-08-05",
+     "refill_due": "2026-11-03"
+    },
+    {
+     "name": "Losartán",
+     "dose": "50 mg",
+     "schedule": "una al día por la mañana",
+     "prescribed_at": "2026-07-08",
+     "refill_due": "2026-10-06"
+    }
+   ],
+   "communication_notes": "Oye mejor del lado derecho. Siéntate de ese lado y háblale despacio, no más fuerte.",
+   "decision_maker": "Bernardo Ibarra (hijo)"
   },
   {
    "id": "elder-02",
@@ -28,14 +50,36 @@
    "name": "Rafael Ortiz",
    "dob": null,
    "address": "Calle Ortiz 199",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Gabriela Ortiz",
+     "relationship": "sobrina",
+     "phone": "55 6417 6358"
+    }
+   ],
    "conditions": [
     "arthritis",
     "type 2 diabetes"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-07-20",
+     "refill_due": "2026-10-18"
+    },
+    {
+     "name": "Metformina",
+     "dose": "850 mg",
+     "schedule": "con la comida principal",
+     "prescribed_at": "2026-08-17",
+     "refill_due": "2026-11-15"
+    }
+   ],
+   "communication_notes": "Oye mejor del lado derecho. Siéntate de ese lado y háblale despacio, no más fuerte.",
+   "decision_maker": "Gabriela Ortiz (sobrina)"
   },
   {
    "id": "elder-03",
@@ -43,14 +87,36 @@
    "name": "Dolores Mendoza",
    "dob": null,
    "address": "Calle Mendoza 149",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Silvia Mendoza",
+     "relationship": "nieto",
+     "phone": "55 4253 1456"
+    }
+   ],
    "conditions": [
     "hypertension",
     "arthritis"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Losartán",
+     "dose": "50 mg",
+     "schedule": "una al día por la mañana",
+     "prescribed_at": "2026-06-22",
+     "refill_due": "2026-09-20"
+    },
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-07-31",
+     "refill_due": "2026-10-29"
+    }
+   ],
+   "communication_notes": "Prefiere que le avisen antes de tocarla. Pregunta antes de ayudarla a levantarse.",
+   "decision_maker": "Silvia Mendoza (nieto)"
   },
   {
    "id": "elder-04",
@@ -58,13 +124,28 @@
    "name": "Esperanza Vargas",
    "dob": null,
    "address": "Calle Vargas 194",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Nadia Vargas",
+     "relationship": "hermana",
+     "phone": "55 5680 8613"
+    }
+   ],
    "conditions": [
     "arthritis"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-06-21",
+     "refill_due": "2026-09-19"
+    }
+   ],
+   "communication_notes": "Prefiere que le avisen antes de tocarla. Pregunta antes de ayudarla a levantarse.",
+   "decision_maker": "Nadia Vargas (hermana)"
   },
   {
    "id": "elder-05",
@@ -72,13 +153,28 @@
    "name": "Ignacio Cordero",
    "dob": null,
    "address": "Calle Cordero 67",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Elvira Cordero",
+     "relationship": "hermana",
+     "phone": "55 1573 8108"
+    }
+   ],
    "conditions": [
     "hypertension"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Losartán",
+     "dose": "50 mg",
+     "schedule": "una al día por la mañana",
+     "prescribed_at": "2026-07-02",
+     "refill_due": "2026-09-30"
+    }
+   ],
+   "communication_notes": "Oye mejor del lado derecho. Siéntate de ese lado y háblale despacio, no más fuerte.",
+   "decision_maker": "Elvira Cordero (hermana)"
   },
   {
    "id": "elder-06",
@@ -86,14 +182,29 @@
    "name": "Refugio Zamudio",
    "dob": null,
    "address": "Calle Zamudio 138",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Rebeca Zamudio",
+     "relationship": "hermana",
+     "phone": "55 9090 4342"
+    }
+   ],
    "conditions": [
     "arthritis",
     "hearing loss"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-08-04",
+     "refill_due": "2026-11-02"
+    }
+   ],
+   "communication_notes": "Le calma la radio en la cocina. Si está inquieta, ponla antes de hablarle.",
+   "decision_maker": "Rebeca Zamudio (hermana)"
   },
   {
    "id": "elder-07",
@@ -101,14 +212,29 @@
    "name": "Baltazar Lozano",
    "dob": null,
    "address": "Calle Lozano 238",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Bernardo Lozano",
+     "relationship": "hermana",
+     "phone": "55 3262 9690"
+    }
+   ],
    "conditions": [
     "hypertension",
     "hearing loss"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Losartán",
+     "dose": "50 mg",
+     "schedule": "una al día por la mañana",
+     "prescribed_at": "2026-07-08",
+     "refill_due": "2026-10-06"
+    }
+   ],
+   "communication_notes": "No le gusta que le hablen como a una niña. Trátala de usted.",
+   "decision_maker": "Bernardo Lozano (hermana)"
   },
   {
    "id": "elder-08",
@@ -116,13 +242,28 @@
    "name": "Amparo Ferrer",
    "dob": null,
    "address": "Calle Ferrer 232",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Gabriela Ferrer",
+     "relationship": "hija",
+     "phone": "55 4179 1669"
+    }
+   ],
    "conditions": [
     "type 2 diabetes"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Metformina",
+     "dose": "850 mg",
+     "schedule": "con la comida principal",
+     "prescribed_at": "2026-08-10",
+     "refill_due": "2026-11-08"
+    }
+   ],
+   "communication_notes": "Se pone nervioso con gente nueva. Di tu nombre al entrar y otra vez al sentarte.",
+   "decision_maker": "Gabriela Ferrer (hija)"
   },
   {
    "id": "elder-09",
@@ -130,14 +271,29 @@
    "name": "Rosendo Barrios",
    "dob": null,
    "address": "Calle Barrios 139",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Ursula Barrios",
+     "relationship": "nieto",
+     "phone": "55 1746 8737"
+    }
+   ],
    "conditions": [
     "type 2 diabetes",
     "hearing loss"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Metformina",
+     "dose": "850 mg",
+     "schedule": "con la comida principal",
+     "prescribed_at": "2026-07-04",
+     "refill_due": "2026-10-02"
+    }
+   ],
+   "communication_notes": "No le gusta que le hablen como a una niña. Trátala de usted.",
+   "decision_maker": "Ursula Barrios (nieto)"
   },
   {
    "id": "elder-10",
@@ -145,13 +301,30 @@
    "name": "Consuelo Quintero",
    "dob": null,
    "address": "Calle Quintero 57",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Bernardo Quintero",
+     "relationship": "hijo",
+     "phone": "55 4024 6218"
+    }
+   ],
    "conditions": [
     "arthritis"
    ],
-   "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "allergies": [
+    "penicilina"
+   ],
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-06-28",
+     "refill_due": "2026-09-26"
+    }
+   ],
+   "communication_notes": "Se pone nervioso con gente nueva. Di tu nombre al entrar y otra vez al sentarte.",
+   "decision_maker": "Bernardo Quintero (hijo)"
   },
   {
    "id": "elder-11",
@@ -159,14 +332,31 @@
    "name": "Salvador Nájera",
    "dob": null,
    "address": "Calle Nájera 25",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Héctor Nájera",
+     "relationship": "vecina",
+     "phone": "55 3585 7337"
+    }
+   ],
    "conditions": [
     "type 2 diabetes",
     "hearing loss"
    ],
-   "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "allergies": [
+    "penicilina"
+   ],
+   "medications": [
+    {
+     "name": "Metformina",
+     "dose": "850 mg",
+     "schedule": "con la comida principal",
+     "prescribed_at": "2026-07-12",
+     "refill_due": "2026-10-10"
+    }
+   ],
+   "communication_notes": "Le calma la radio en la cocina. Si está inquieta, ponla antes de hablarle.",
+   "decision_maker": "Héctor Nájera (vecina)"
   },
   {
    "id": "elder-12",
@@ -174,14 +364,29 @@
    "name": "Guadalupe Escamilla",
    "dob": null,
    "address": "Calle Escamilla 197",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Quirino Escamilla",
+     "relationship": "hijo",
+     "phone": "55 7293 5335"
+    }
+   ],
    "conditions": [
     "low vision",
     "hypertension"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Losartán",
+     "dose": "50 mg",
+     "schedule": "una al día por la mañana",
+     "prescribed_at": "2026-08-06",
+     "refill_due": "2026-11-04"
+    }
+   ],
+   "communication_notes": "Se pone nervioso con gente nueva. Di tu nombre al entrar y otra vez al sentarte.",
+   "decision_maker": "Quirino Escamilla (hijo)"
   },
   {
    "id": "elder-13",
@@ -189,14 +394,29 @@
    "name": "Fermín Padilla",
    "dob": null,
    "address": "Calle Padilla 35",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Fabián Padilla",
+     "relationship": "hija",
+     "phone": "55 4675 1167"
+    }
+   ],
    "conditions": [
     "arthritis",
     "hearing loss"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-08-06",
+     "refill_due": "2026-11-04"
+    }
+   ],
+   "communication_notes": "Tarda en encontrar las palabras. No las completes por él, espera.",
+   "decision_maker": "Fabián Padilla (hija)"
   },
   {
    "id": "elder-14",
@@ -204,14 +424,36 @@
    "name": "Otilia Tejeda",
    "dob": null,
    "address": "Calle Tejeda 229",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Damián Tejeda",
+     "relationship": "sobrina",
+     "phone": "55 9723 6271"
+    }
+   ],
    "conditions": [
     "arthritis",
     "hypertension"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-07-23",
+     "refill_due": "2026-10-21"
+    },
+    {
+     "name": "Losartán",
+     "dose": "50 mg",
+     "schedule": "una al día por la mañana",
+     "prescribed_at": "2026-08-16",
+     "refill_due": "2026-11-14"
+    }
+   ],
+   "communication_notes": "No le gusta que le hablen como a una niña. Trátala de usted.",
+   "decision_maker": "Damián Tejeda (sobrina)"
   },
   {
    "id": "elder-15",
@@ -219,14 +461,29 @@
    "name": "Aurelio Villalpando",
    "dob": null,
    "address": "Calle Villalpando 76",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Valentín Villalpando",
+     "relationship": "hijo",
+     "phone": "55 2783 8319"
+    }
+   ],
    "conditions": [
     "low vision",
     "hypertension"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Losartán",
+     "dose": "50 mg",
+     "schedule": "una al día por la mañana",
+     "prescribed_at": "2026-06-24",
+     "refill_due": "2026-09-22"
+    }
+   ],
+   "communication_notes": "Tarda en encontrar las palabras. No las completes por él, espera.",
+   "decision_maker": "Valentín Villalpando (hijo)"
   },
   {
    "id": "elder-16",
@@ -234,13 +491,28 @@
    "name": "Remedios Rueda",
    "dob": null,
    "address": "Calle Rueda 193",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Valentín Rueda",
+     "relationship": "hijo",
+     "phone": "55 5618 5663"
+    }
+   ],
    "conditions": [
     "hypertension"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Losartán",
+     "dose": "50 mg",
+     "schedule": "una al día por la mañana",
+     "prescribed_at": "2026-07-23",
+     "refill_due": "2026-10-21"
+    }
+   ],
+   "communication_notes": "Le calma la radio en la cocina. Si está inquieta, ponla antes de hablarle.",
+   "decision_maker": "Valentín Rueda (hijo)"
   },
   {
    "id": "elder-17",
@@ -248,13 +520,20 @@
    "name": "Ceferino Cañedo",
    "dob": null,
    "address": "Calle Cañedo 108",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Ursula Cañedo",
+     "relationship": "hermana",
+     "phone": "55 1895 8239"
+    }
+   ],
    "conditions": [
     "low vision"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [],
+   "communication_notes": "Le calma la radio en la cocina. Si está inquieta, ponla antes de hablarle.",
+   "decision_maker": "Ursula Cañedo (hermana)"
   },
   {
    "id": "elder-18",
@@ -262,13 +541,28 @@
    "name": "Josefina Sandoval",
    "dob": null,
    "address": "Calle Sandoval 209",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Silvia Sandoval",
+     "relationship": "sobrina",
+     "phone": "55 8839 6296"
+    }
+   ],
    "conditions": [
     "arthritis"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-08-19",
+     "refill_due": "2026-11-17"
+    }
+   ],
+   "communication_notes": "Oye mejor del lado derecho. Siéntate de ese lado y háblale despacio, no más fuerte.",
+   "decision_maker": "Silvia Sandoval (sobrina)"
   },
   {
    "id": "elder-19",
@@ -276,14 +570,29 @@
    "name": "Aureliano Arriaga",
    "dob": null,
    "address": "Calle Arriaga 211",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Valentín Arriaga",
+     "relationship": "hermana",
+     "phone": "55 2864 1837"
+    }
+   ],
    "conditions": [
     "arthritis",
     "low vision"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-06-18",
+     "refill_due": "2026-09-16"
+    }
+   ],
+   "communication_notes": "Le calma la radio en la cocina. Si está inquieta, ponla antes de hablarle.",
+   "decision_maker": "Valentín Arriaga (hermana)"
   },
   {
    "id": "elder-20",
@@ -291,14 +600,36 @@
    "name": "Herlinda Bermúdez",
    "dob": null,
    "address": "Calle Bermúdez 167",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Gabriela Bermúdez",
+     "relationship": "hijo",
+     "phone": "55 5397 8774"
+    }
+   ],
    "conditions": [
     "type 2 diabetes",
     "arthritis"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Metformina",
+     "dose": "850 mg",
+     "schedule": "con la comida principal",
+     "prescribed_at": "2026-08-19",
+     "refill_due": "2026-11-17"
+    },
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-07-08",
+     "refill_due": "2026-10-06"
+    }
+   ],
+   "communication_notes": "Tarda en encontrar las palabras. No las completes por él, espera.",
+   "decision_maker": "Gabriela Bermúdez (hijo)"
   },
   {
    "id": "elder-21",
@@ -306,13 +637,30 @@
    "name": "Práxedis Cisneros",
    "dob": null,
    "address": "Calle Cisneros 47",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Joaquín Cisneros",
+     "relationship": "sobrina",
+     "phone": "55 8383 3248"
+    }
+   ],
    "conditions": [
     "arthritis"
    ],
-   "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "allergies": [
+    "penicilina"
+   ],
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-08-22",
+     "refill_due": "2026-11-20"
+    }
+   ],
+   "communication_notes": "Tarda en encontrar las palabras. No las completes por él, espera.",
+   "decision_maker": "Joaquín Cisneros (sobrina)"
   },
   {
    "id": "elder-22",
@@ -320,13 +668,28 @@
    "name": "Soledad Delgadillo",
    "dob": null,
    "address": "Calle Delgadillo 233",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Bernardo Delgadillo",
+     "relationship": "nieto",
+     "phone": "55 2059 8366"
+    }
+   ],
    "conditions": [
     "arthritis"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-06-30",
+     "refill_due": "2026-09-28"
+    }
+   ],
+   "communication_notes": "Le calma la radio en la cocina. Si está inquieta, ponla antes de hablarle.",
+   "decision_maker": "Bernardo Delgadillo (nieto)"
   },
   {
    "id": "elder-23",
@@ -334,14 +697,29 @@
    "name": "Eulalio Espinoza",
    "dob": null,
    "address": "Calle Espinoza 120",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Ursula Espinoza",
+     "relationship": "sobrina",
+     "phone": "55 7363 4038"
+    }
+   ],
    "conditions": [
     "arthritis",
     "low vision"
    ],
    "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-07-06",
+     "refill_due": "2026-10-04"
+    }
+   ],
+   "communication_notes": "Tarda en encontrar las palabras. No las completes por él, espera.",
+   "decision_maker": "Ursula Espinoza (sobrina)"
   },
   {
    "id": "elder-24",
@@ -349,14 +727,31 @@
    "name": "Natividad Fajardo",
    "dob": null,
    "address": "Calle Fajardo 229",
-   "contacts": [],
+   "contacts": [
+    {
+     "name": "Mariana Fajardo",
+     "relationship": "sobrina",
+     "phone": "55 8021 2404"
+    }
+   ],
    "conditions": [
     "hearing loss",
     "arthritis"
    ],
-   "allergies": [],
-   "communication_notes": "",
-   "decision_maker": ""
+   "allergies": [
+    "sulfas"
+   ],
+   "medications": [
+    {
+     "name": "Paracetamol",
+     "dose": "500 mg",
+     "schedule": "cuando le duele, máximo tres al día",
+     "prescribed_at": "2026-06-22",
+     "refill_due": "2026-09-20"
+    }
+   ],
+   "communication_notes": "Prefiere que le avisen antes de tocarla. Pregunta antes de ayudarla a levantarse.",
+   "decision_maker": "Mariana Fajardo (sobrina)"
   }
  ],
  "volunteers": [

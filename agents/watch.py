@@ -29,17 +29,10 @@ from strands import Agent, tool
 from core.baseline import detect, suggest
 from core.bedrock import reasoning_model
 from core.models import Alert
+from core.safety import FORBIDDEN, names_a_condition
 from core.store import Store
 
-#: Words a note must not contain. The system prompt asks the model not to name a condition;
-#: this checks. A prompt is a request, and the one rule this product cannot afford to get
-#: wrong is worth enforcing where enforcement is possible.
-FORBIDDEN = (
-    "infection", "infección", "infeccion", "uti", "urinary", "urinaria",
-    "dementia", "demencia", "alzheimer", "deshidrat", "dehydrat",
-    "diagnos", "diagnóst", "prescri", "receta", "medicate", "medicar",
-    "disease", "enfermedad", "syndrome", "síndrome",
-)
+__all__ = ["FORBIDDEN", "build_agent", "run", "sweep"]
 
 SYSTEM_PROMPT = """\
 You write the daily briefing for the coordinator of a neighbourhood care network. She has
@@ -69,9 +62,9 @@ Close with one line: how many people you checked, and how many need her.
 """
 
 
-def _names_a_condition(note: str) -> str | None:
-    lowered = note.lower()
-    return next((term for term in FORBIDDEN if term in lowered), None)
+#: Kept as a module-level name because this is the guardrail the tests point at, and the
+#: check now lives in `core.safety` so the brief agent enforces the same rule.
+_names_a_condition = names_a_condition
 
 
 def sweep(store: Store, as_of: date) -> dict[str, Alert]:

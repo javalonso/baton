@@ -86,6 +86,12 @@ def _deviating_categories(visit: Visit, baseline: Baseline) -> set[Category]:
     }
 
 
+#: The same question, under a name other modules may ask it by. The pre-visit brief has to
+#: mean the same thing by "off" that the alert does; two definitions would drift apart and
+#: the coordinator would end up reading two stories about one person.
+deviating_categories = _deviating_categories
+
+
 def _by_day(visits: list[Visit]) -> dict[date, list[Visit]]:
     days: dict[date, list[Visit]] = defaultdict(list)
     for visit in visits:

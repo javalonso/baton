@@ -10,6 +10,7 @@ dependencies = [
     "mangum",
     "pydantic",
     "boto3",
+    "reportlab",
 ]
 
 [project.optional-dependencies]
