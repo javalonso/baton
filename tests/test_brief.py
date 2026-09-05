@@ -14,7 +14,7 @@ import pytest
 from agents.brief import facts_for, plain_brief
 from core.handoff import render
 from core.safety import names_a_condition, names_a_new_condition
-from core.store import Store
+from core.store import JsonStore, Store
 
 AS_OF = date(2026, 9, 14)
 CARMEN = "elder-01"  # acute: three days, fluids, orientation, food
@@ -23,7 +23,7 @@ DOLORES = "elder-03"  # the control: always been this way, so it is not news abo
 
 @pytest.fixture(scope="module")
 def store() -> Store:
-    return Store()
+    return JsonStore()
 
 
 def test_facts_carry_the_record_and_the_comparison(store: Store):

@@ -30,7 +30,7 @@ from core.baseline import detect, suggest
 from core.bedrock import reasoning_model
 from core.models import Alert
 from core.safety import FORBIDDEN, names_a_condition
-from core.store import Store
+from core.store import Store, open_store
 
 __all__ = ["FORBIDDEN", "build_agent", "run", "sweep"]
 
@@ -152,7 +152,7 @@ def run(
     store: Store | None = None, as_of: date | None = None, locale: str = "es"
 ) -> tuple[list[Alert], str]:
     """One scheduled run. Returns every alert opened, and what the agent said."""
-    store = store or Store()
+    store = store or open_store()
     as_of = as_of or date.fromisoformat(store.generated_for)
 
     found = sweep(store, as_of)

@@ -28,7 +28,7 @@ from core.bedrock import intake_model
 from core.models import Message
 from core.roster import Coverage, Missed, assess
 from core.safety import names_a_condition
-from core.store import Store
+from core.store import Store, open_store
 
 SYSTEM_PROMPT = """\
 You keep the schedule of a neighbourhood care network honest. Fourteen volunteers, one
@@ -268,7 +268,7 @@ def run(
     locale: str = "es",
 ) -> tuple[Coverage, list[Message]]:
     """One evening's pass. Returns what was found and what will be sent."""
-    store = store or Store()
+    store = store or open_store()
     as_of = as_of or date.fromisoformat(store.generated_for)
     coverage = assess(store, as_of, now)
 

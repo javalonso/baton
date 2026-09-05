@@ -36,7 +36,7 @@ from core.bedrock import reasoning_model
 from core.handoff import render
 from core.models import Brief, Elder, HandoffSheet
 from core.safety import names_a_new_condition
-from core.store import Store
+from core.store import Store, open_store
 from core.vocabulary import Trend
 
 SHEETS = Path(__file__).resolve().parents[1] / "data" / "handoffs"
@@ -251,7 +251,7 @@ def write(
     locale: str = "es",
 ) -> Brief:
     """Write one brief. Falls back to the deterministic version if the model does not."""
-    store = store or Store()
+    store = store or open_store()
     as_of = as_of or date.fromisoformat(store.generated_for)
     elder = store.elder(elder_id)
 
@@ -272,7 +272,7 @@ def handoff(
     out_dir: Path | str = SHEETS,
 ) -> HandoffSheet:
     """Write the brief, then lay it out as the one page somebody can carry."""
-    store = store or Store()
+    store = store or open_store()
     as_of = as_of or date.fromisoformat(store.generated_for)
     elder = store.elder(elder_id)
 

@@ -26,11 +26,9 @@ from __future__ import annotations
 
 import os
 
-import boto3
 from strands.models import BedrockModel
 
-REGION = os.environ.get("AWS_REGION", "us-west-2")
-PROFILE = os.environ.get("AWS_PROFILE", "ninja")
+from core.aws import session
 
 INTAKE_MODEL_ID = os.environ.get(
     "BEDROCK_MODEL_INTAKE", "us.anthropic.claude-haiku-4-5-20251001-v1:0"
@@ -38,15 +36,11 @@ INTAKE_MODEL_ID = os.environ.get(
 REASONING_MODEL_ID = os.environ.get("BEDROCK_MODEL_REASONING", "us.anthropic.claude-opus-5")
 
 
-def _session() -> boto3.Session:
-    return boto3.Session(profile_name=PROFILE, region_name=REGION)
-
-
 def intake_model(**overrides) -> BedrockModel:
     config = {"model_id": INTAKE_MODEL_ID, "max_tokens": 2000} | overrides
-    return BedrockModel(boto_session=_session(), **config)
+    return BedrockModel(boto_session=session(), **config)
 
 
 def reasoning_model(**overrides) -> BedrockModel:
     config = {"model_id": REASONING_MODEL_ID, "max_tokens": 32000} | overrides
-    return BedrockModel(boto_session=_session(), **config)
+    return BedrockModel(boto_session=session(), **config)

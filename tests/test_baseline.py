@@ -13,7 +13,7 @@ from datetime import date
 import pytest
 
 from core.baseline import compute_baseline, detect, suggest
-from core.store import Store
+from core.store import JsonStore, Store
 from core.vocabulary import Category
 
 AS_OF = date(2026, 9, 14)
@@ -21,7 +21,7 @@ AS_OF = date(2026, 9, 14)
 
 @pytest.fixture(scope="module")
 def store() -> Store:
-    return Store()
+    return JsonStore()
 
 
 def _detect(store: Store, elder_id: str):

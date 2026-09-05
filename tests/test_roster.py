@@ -17,7 +17,7 @@ import pytest
 from agents.roster import plain_messages
 from core.models import Shift
 from core.roster import ESCALATE_WITHIN_HOURS, assess
-from core.store import Store
+from core.store import JsonStore, Store
 
 AS_OF = date(2026, 9, 14)
 TONIGHT = datetime(2026, 9, 14, 20, 0)
@@ -25,7 +25,7 @@ TONIGHT = datetime(2026, 9, 14, 20, 0)
 
 @pytest.fixture(scope="module")
 def store() -> Store:
-    return Store()
+    return JsonStore()
 
 
 @pytest.fixture(scope="module")
