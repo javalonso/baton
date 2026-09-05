@@ -291,9 +291,14 @@ class DynamoStore(Store):
                 ExpressionAttributeNames={"#s": "status"},
                 ExpressionAttributeValues={":vol": volunteer_id, ":claimed": "claimed"},
                 ReturnValues="ALL_NEW",
+                ReturnValuesOnConditionCheckFailure="ALL_OLD",
             )
         except ClientError as exc:
             if exc.response["Error"]["Code"] == "ConditionalCheckFailedException":
+                # The same condition covers "already taken" and "never existed". The caller
+                # needs to tell them apart: one is a message, the other is a bug.
+                if not exc.response.get("Item"):
+                    raise StopIteration(shift_id) from exc
                 raise ShiftAlreadyClaimed(shift_id) from exc
             raise
         self._shifts = None

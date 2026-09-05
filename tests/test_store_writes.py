@@ -101,8 +101,9 @@ def test_claiming_twice_yourself_is_not_an_error(store: JsonStore):
 
 
 def test_an_alert_can_be_acknowledged(store: JsonStore):
-    from agents.watch import sweep
     from datetime import date
+
+    from agents.watch import sweep
 
     found = sweep(store, date.fromisoformat(store.generated_for))
     alert = next(iter(found.values()))

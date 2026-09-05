@@ -16,7 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from core.dynamo import (  # noqa: E402
+from core.dynamo import (
     DynamoStore,
     elder_pk,
     org_pk,
@@ -25,7 +25,7 @@ from core.dynamo import (  # noqa: E402
     to_item,
     visit_sk,
 )
-from core.store import DEFAULT_PATH, JsonStore  # noqa: E402
+from core.store import DEFAULT_PATH, JsonStore
 
 
 def wipe(table_name: str, org_id: str) -> int:
