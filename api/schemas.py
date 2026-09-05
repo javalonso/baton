@@ -69,6 +69,7 @@ class BriefResponse(BaseModel):
     brief: Brief
     last_visit: datetime | None = None
     written_by_model: bool = True
+    cached: bool = False
 
 
 class RecordRequest(BaseModel):

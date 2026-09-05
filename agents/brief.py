@@ -249,11 +249,23 @@ def write(
     store: Store | None = None,
     as_of: date | None = None,
     locale: str = "es",
+    refresh: bool = False,
 ) -> Brief:
-    """Write one brief. Falls back to the deterministic version if the model does not."""
+    """Write one brief. Falls back to the deterministic version if the model does not.
+
+    Asks storage first. A brief is eighteen seconds of a reasoning model describing one
+    person on one day, and four volunteers opening the same door on the same morning should
+    read the same paragraphs rather than pay for four of them. `refresh` forces a rewrite,
+    which is what the button marked "regenerate" is for.
+    """
     store = store or open_store()
     as_of = as_of or date.fromisoformat(store.generated_for)
     elder = store.elder(elder_id)
+
+    if not refresh:
+        cached = store.get_brief(elder_id, as_of, locale)
+        if cached is not None:
+            return cached
 
     agent, written = build_agent(store, elder_id, as_of, locale)
     try:
@@ -261,7 +273,13 @@ def write(
     except Exception:  # noqa: BLE001 - a doorstep is no place to raise
         written.clear()
 
-    return written[0] if written else plain_brief(facts_for(store, elder_id, as_of), elder, locale)
+    brief = written[0] if written else plain_brief(facts_for(store, elder_id, as_of), elder, locale)
+
+    # The fallback is deliberately not cached. It is what a volunteer gets when the model
+    # failed, and caching it would turn one bad minute into a bad day.
+    if brief.written_by_model:
+        store.save_brief(brief, as_of)
+    return brief
 
 
 def handoff(

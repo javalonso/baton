@@ -68,15 +68,20 @@ def brief(
     store: StoreDep,
     as_of: AsOfDep,
     locale: LocaleDep,
+    refresh: bool = False,
 ) -> BriefResponse:
     """V2. The thing that does not exist today: what changed, and how to be with them.
 
-    Slow by nature -- this is a reasoning model reading a person's history. The client shows
-    the facts first and lets the prose arrive.
+    Slow the first time somebody asks for a person on a given day, and immediate after that.
+    The prose describes one person as of one date, so the second volunteer through the same
+    door reads what the first one read rather than paying for it again.
     """
     _guard(store, volunteer.id, elder_id)
     elder = store.elder(elder_id)
-    written = brief_agent.write(elder_id, store=store, as_of=as_of, locale=locale)
+    cached = store.get_brief(elder_id, as_of, locale) is not None and not refresh
+    written = brief_agent.write(
+        elder_id, store=store, as_of=as_of, locale=locale, refresh=refresh
+    )
     visits = store.visits_for(elder_id)
     return BriefResponse(
         elder_id=elder_id,
@@ -84,6 +89,7 @@ def brief(
         brief=written,
         last_visit=visits[-1].started_at if visits else None,
         written_by_model=written.written_by_model,
+        cached=cached,
     )
 
 

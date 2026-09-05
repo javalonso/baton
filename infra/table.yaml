@@ -21,6 +21,11 @@ Resources:
         PointInTimeRecoveryEnabled: true
       SSESpecification:
         SSEEnabled: true
+      # Generated prose is a cache, not a record. A brief describes a person as of one day,
+      # so keeping it past that day is worse than not keeping it: it would be read as current.
+      TimeToLiveSpecification:
+        AttributeName: expires_at
+        Enabled: true
       AttributeDefinitions:
         - AttributeName: PK
           AttributeType: S

@@ -10,6 +10,7 @@ One table, because the questions this product asks are few and known. The layout
 | alert      | `ORG#<org>`         | `ALERT#<id>`                  | `ORG#<org>#ALERT#<status>` | `<opened_at>`  |
 | shift      | `ORG#<org>#SHIFTS`  | `SHIFT#<id>`                  | `ORG#<org>#SHIFT`    | `<scheduled_at>`     |
 | visit      | `ELDER#<elder_id>`  | `VISIT#<started_at>#<id>`     | `ORG#<org>#VISIT`    | `<started_at>#<id>`  |
+| brief      | `ELDER#<elder_id>`  | `BRIEF#<date>#<locale>`       |                      |                      |
 
 Two deliberate choices worth defending.
 
@@ -34,14 +35,16 @@ from __future__ import annotations
 
 import json
 import os
+import time
+from datetime import date
 from decimal import Decimal
 from typing import Any
 
 from botocore.exceptions import ClientError
 
 from core.aws import session
-from core.models import Alert, Elder, Shift, Visit, Volunteer
-from core.store import ShiftAlreadyClaimed, Store
+from core.models import Alert, Brief, Elder, Shift, Visit, Volunteer
+from core.store import ShiftAlreadyClaimed, Store, brief_key
 
 TABLE = os.environ.get("BATON_TABLE", "baton")
 ORG_ID = os.environ.get("BATON_ORG", "org-san-miguel")
@@ -369,6 +372,27 @@ class DynamoStore(Store):
         )
         self._shifts = None
         return shift
+
+    # -- generated prose -----------------------------------------------------
+
+    def get_brief(self, elder_id: str, as_of: date, locale: str) -> Brief | None:
+        item = self.table.get_item(
+            Key={"PK": elder_pk(elder_id), "SK": f"BRIEF#{as_of.isoformat()}#{locale}"}
+        ).get("Item")
+        return from_item(Brief, item) if item else None
+
+    def save_brief(self, brief: Brief, as_of: date) -> Brief:
+        item = to_item(
+            brief,
+            PK=elder_pk(brief.elder_id),
+            SK=f"BRIEF#{as_of.isoformat()}#{brief.locale}",
+            entity="brief",
+        )
+        # Two days, not one. A brief written at eleven at night is still the right brief for
+        # the volunteer knocking at eight the next morning.
+        item["expires_at"] = int(time.time()) + 2 * 86400
+        self.table.put_item(Item=item)
+        return brief
 
     def save_organization(self, organization: dict, generated_for: str) -> None:
         self.table.put_item(

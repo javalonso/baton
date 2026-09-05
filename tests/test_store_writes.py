@@ -133,3 +133,69 @@ def test_shift_times_round_trip_through_a_write(store: JsonStore, tmp_path):
     store.save_shift(shift)
     reopened = JsonStore(tmp_path / "world.json")
     assert reopened.shift("shift-tz-1").scheduled_at == shift.scheduled_at
+
+
+def test_a_brief_is_written_once_a_day_and_read_after_that(store: JsonStore, monkeypatch):
+    """Eighteen seconds of a reasoning model, per person per day per language. Once."""
+    from datetime import date
+
+    from agents import brief as brief_agent
+    from core.models import Brief
+
+    calls = []
+
+    def fake_build_agent(store_, elder_id, as_of, locale):
+        calls.append(elder_id)
+        written = [
+            Brief(
+                elder_id=elder_id,
+                locale=locale,
+                since_last_visit="Ha comido menos.",
+                watch_for="Si sigue asi.",
+                how_to_be_with_them="Despacio.",
+                written_by_model=True,
+            )
+        ]
+
+        class _Agent:
+            def __call__(self, _prompt):
+                return ""
+
+        return _Agent(), written
+
+    monkeypatch.setattr(brief_agent, "build_agent", fake_build_agent)
+    as_of = date.fromisoformat(store.generated_for)
+    elder_id = store.elders[0].id
+
+    first = brief_agent.write(elder_id, store=store, as_of=as_of, locale="es")
+    second = brief_agent.write(elder_id, store=store, as_of=as_of, locale="es")
+    assert calls == [elder_id]
+    assert second.since_last_visit == first.since_last_visit
+
+    brief_agent.write(elder_id, store=store, as_of=as_of, locale="en")
+    assert len(calls) == 2, "a different language is a different brief"
+
+    brief_agent.write(elder_id, store=store, as_of=as_of, locale="es", refresh=True)
+    assert len(calls) == 3, "refresh has to actually refresh"
+
+
+def test_a_failed_brief_is_never_cached(store: JsonStore, monkeypatch):
+    """The fallback is what a volunteer gets on a bad minute. Caching it makes it a bad day."""
+    from datetime import date
+
+    from agents import brief as brief_agent
+
+    def exploding_build_agent(store_, elder_id, as_of, locale):
+        class _Agent:
+            def __call__(self, _prompt):
+                raise RuntimeError("bedrock is having a day")
+
+        return _Agent(), []
+
+    monkeypatch.setattr(brief_agent, "build_agent", exploding_build_agent)
+    as_of = date.fromisoformat(store.generated_for)
+    elder_id = store.elders[0].id
+
+    fallback = brief_agent.write(elder_id, store=store, as_of=as_of, locale="es")
+    assert fallback.written_by_model is False
+    assert store.get_brief(elder_id, as_of, "es") is None

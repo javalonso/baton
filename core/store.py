@@ -19,10 +19,10 @@ from __future__ import annotations
 import json
 import os
 from abc import ABC, abstractmethod
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
-from core.models import Alert, Elder, Shift, Visit, Volunteer
+from core.models import Alert, Brief, Elder, Shift, Visit, Volunteer
 
 DEFAULT_PATH = Path(__file__).resolve().parents[1] / "data" / "seed.json"
 
@@ -130,6 +130,19 @@ class Store(ABC):
     @abstractmethod
     def save_shift(self, shift: Shift) -> Shift: ...
 
+    # -- generated prose -----------------------------------------------------
+    #
+    # A brief costs a reasoning model eighteen seconds and real money, and it describes a
+    # person as of one day. So it is written once per person per day per language and read
+    # back after that. Not a record -- a cache with an expiry, because a brief still being
+    # served next week would be read as current.
+
+    @abstractmethod
+    def get_brief(self, elder_id: str, as_of: date, locale: str) -> Brief | None: ...
+
+    @abstractmethod
+    def save_brief(self, brief: Brief, as_of: date) -> Brief: ...
+
 
 class JsonStore(Store):
     """The whole world in one file, held in memory, written back on every change.
@@ -149,6 +162,9 @@ class JsonStore(Store):
         self._visits = [Visit(**v) for v in raw["visits"]]
         self._shifts = [Shift(**s) for s in raw.get("shifts", [])]
         self._alerts = [Alert(**a) for a in raw.get("alerts", [])]
+        self._briefs: dict[str, Brief] = {
+            k: Brief(**v) for k, v in raw.get("briefs", {}).items()
+        }
 
     @property
     def organization(self) -> dict:
@@ -191,6 +207,7 @@ class JsonStore(Store):
             "visits": [v.model_dump(mode="json") for v in self._visits],
             "shifts": [s.model_dump(mode="json") for s in self._shifts],
             "alerts": [a.model_dump(mode="json") for a in self._alerts],
+            "briefs": {k: b.model_dump(mode="json") for k, b in self._briefs.items()},
         }
         self.path.write_text(json.dumps(payload, indent=1, ensure_ascii=False), encoding="utf-8")
 
@@ -246,6 +263,18 @@ class JsonStore(Store):
         self._replace(self._shifts, shift)
         self._flush()
         return shift
+
+    def get_brief(self, elder_id: str, as_of: date, locale: str) -> Brief | None:
+        return self._briefs.get(brief_key(elder_id, as_of, locale))
+
+    def save_brief(self, brief: Brief, as_of: date) -> Brief:
+        self._briefs[brief_key(brief.elder_id, as_of, brief.locale)] = brief
+        self._flush()
+        return brief
+
+
+def brief_key(elder_id: str, as_of: date, locale: str) -> str:
+    return f"{elder_id}#{as_of.isoformat()}#{locale}"
 
 
 def open_store() -> Store:

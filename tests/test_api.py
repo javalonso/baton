@@ -232,7 +232,7 @@ def test_the_brief_is_the_agents_prose_with_the_facts_beside_it(
     session, _, shift = _volunteer_session(client, store)
     monkeypatch.setattr(
         "agents.brief.write",
-        lambda elder_id, store=None, as_of=None, locale="es": Brief(
+        lambda elder_id, store=None, as_of=None, locale="es", refresh=False: Brief(
             elder_id=elder_id,
             locale=locale,
             since_last_visit="Ha comido menos.",
@@ -320,7 +320,7 @@ def test_the_handoff_sheet_comes_back_as_a_pdf(client: TestClient, store: JsonSt
     session = _coordinator_session(client, store)
     monkeypatch.setattr(
         "agents.brief.write",
-        lambda elder_id, store=None, as_of=None, locale="es": Brief(
+        lambda elder_id, store=None, as_of=None, locale="es", refresh=False: Brief(
             elder_id=elder_id,
             locale=locale,
             since_last_visit="Ha comido menos.",

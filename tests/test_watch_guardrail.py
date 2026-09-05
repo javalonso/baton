@@ -10,6 +10,7 @@ from __future__ import annotations
 import pytest
 
 from agents.watch import FORBIDDEN, _names_a_condition
+from core.safety import names_a_condition
 
 
 @pytest.mark.parametrize(
@@ -42,3 +43,37 @@ def test_the_check_covers_both_product_languages():
     """A guardrail that only works in English is not a guardrail for this product."""
     spanish = {"infección", "demencia", "enfermedad", "receta", "diagnóst"}
     assert spanish & set(FORBIDDEN), "the Spanish side of the vocabulary is missing"
+
+
+@pytest.mark.parametrize(
+    "innocent",
+    [
+        "Todo dentro de su rutina de siempre.",
+        "Her routine was unchanged.",
+        "Le costo levantarse de la silla, como es habitual.",
+        "Comio menos que otros dias.",
+    ],
+)
+def test_ordinary_words_are_not_conditions(innocent: str):
+    """`uti` lives inside `rutina` and `routine`. Substring matching rejected both.
+
+    Every false rejection is a retry against a reasoning model, and a guardrail that fires
+    on ordinary words is one somebody eventually turns off.
+    """
+    assert names_a_condition(innocent) is None
+
+
+@pytest.mark.parametrize(
+    "named",
+    [
+        "Parece una infeccion urinaria.",
+        "Podria ser deshidratacion.",
+        "Signs of a UTI.",
+        "Esto sugiere demencia.",
+        "Habria que medicarla hoy.",
+        "Sospecho una enfermedad renal.",
+    ],
+)
+def test_a_named_condition_is_still_caught(named: str):
+    """Stems have to keep working: infecciones, deshidratada, diagnosticar."""
+    assert names_a_condition(named) is not None
