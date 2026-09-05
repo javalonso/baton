@@ -1,0 +1,411 @@
+/* The volunteer app, built on the verified palette in `design/tokens.css`.
+ *
+ * Two rules run through everything here. Targets are 56px because this is used one-handed,
+ * outdoors, sometimes in the rain, by people who are not twenty-five. And body text is
+ * 18px for the same reason. Neither is negotiable to fit more on a screen; if something
+ * does not fit, it was not important enough.
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--size-lg);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* Links here are cards and buttons, never prose. The browser default underline reads as
+ * "reference" and this app has none of those. */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* -- shell ----------------------------------------------------------------- */
+
+.app {
+  max-width: 34rem;
+  margin: 0 auto;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar h1 {
+  font-size: var(--size-md);
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.topbar .who {
+  color: var(--text-muted);
+  font-size: var(--size-sm);
+  margin-left: auto;
+}
+
+.screen {
+  padding: var(--space-4);
+  padding-bottom: var(--space-12);
+  flex: 1;
+}
+
+.screen > header {
+  margin: var(--space-2) 0 var(--space-6);
+}
+
+.screen h2 {
+  font-size: var(--size-2xl);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-1);
+}
+
+.screen .subtle {
+  color: var(--text-muted);
+  font-size: var(--size-sm);
+  margin: 0;
+}
+
+/* -- cards ----------------------------------------------------------------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.card.tappable {
+  display: block;
+  width: 100%;
+  text-align: left;
+  min-height: var(--target-field);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.card.tappable:hover {
+  border-color: var(--border-strong);
+}
+
+.card.tappable:active {
+  transform: scale(0.995);
+}
+
+.card .name {
+  font-size: var(--size-xl);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  display: block;
+}
+
+.card .meta {
+  color: var(--text-muted);
+  font-size: var(--size-sm);
+  display: block;
+  margin-top: var(--space-1);
+}
+
+.card .when {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--sage);
+}
+
+/* One thing at a time: the urgent treatment is the scarcest ink in the system. */
+.card.flagged {
+  border-color: var(--urgent);
+  background: var(--urgent-soft);
+}
+
+.card.flagged .meta {
+  color: var(--urgent);
+}
+
+/* -- buttons --------------------------------------------------------------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--target-field);
+  width: 100%;
+  padding: 0 var(--space-6);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--sage);
+  color: var(--on-sage);
+  font-size: var(--size-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+
+.button:hover:not(:disabled) {
+  background: var(--sage-hover);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.button.quiet {
+  background: transparent;
+  color: var(--sage);
+  border-color: var(--border-strong);
+}
+
+.button.quiet:hover:not(:disabled) {
+  background: var(--sage-soft);
+}
+
+.button.small {
+  min-height: var(--target-portal);
+  width: auto;
+  font-size: var(--size-sm);
+  padding: 0 var(--space-4);
+}
+
+:where(button, a, input, textarea):focus-visible {
+  outline: 3px solid var(--sage);
+  outline-offset: 2px;
+}
+
+/* -- the record button, V3 ------------------------------------------------- */
+
+.record {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-8) 0;
+}
+
+.record-button {
+  width: 11rem;
+  height: 11rem;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--sage);
+  color: var(--on-sage);
+  font-size: var(--size-xl);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.record-button[data-listening="true"] {
+  background: var(--urgent);
+  color: var(--on-urgent);
+  animation: pulse 1.6s var(--ease) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .record-button[data-listening="true"] {
+    animation: none;
+    outline: 4px solid var(--urgent);
+    outline-offset: 4px;
+  }
+}
+
+.heard {
+  background: var(--surface-sunken);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  font-size: var(--size-lg);
+  min-height: 6rem;
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  min-height: 8rem;
+  padding: var(--space-4);
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  resize: vertical;
+}
+
+/* -- observation chips, V3 ------------------------------------------------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0;
+}
+
+.chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: var(--target-field);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  cursor: pointer;
+  text-align: left;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.chip[data-trend="worse"] {
+  border-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.chip[data-removed="true"] {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+.chip .category {
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.chip .summary {
+  font-size: var(--size-md);
+  font-weight: 500;
+}
+
+.chip .quote {
+  font-size: var(--size-sm);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* -- brief, V2 ------------------------------------------------------------- */
+
+.brief section {
+  margin-bottom: var(--space-6);
+}
+
+.brief h3 {
+  font-size: var(--size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0 0 var(--space-2);
+  font-weight: 600;
+}
+
+.brief p {
+  margin: 0;
+  font-size: var(--size-lg);
+}
+
+.badge {
+  display: inline-block;
+  font-size: var(--size-xs);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 2px var(--space-3);
+}
+
+/* -- states ---------------------------------------------------------------- */
+
+.empty {
+  text-align: center;
+  padding: var(--space-12) var(--space-4);
+  color: var(--text-muted);
+}
+
+.empty strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--size-xl);
+  margin-bottom: var(--space-2);
+}
+
+.error {
+  background: var(--urgent-soft);
+  color: var(--urgent);
+  border: 1px solid var(--urgent);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.skeleton {
+  background: var(--surface-sunken);
+  border-radius: var(--radius-md);
+  height: 1.1em;
+  margin-bottom: var(--space-2);
+  animation: shimmer 1.4s var(--ease) infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.footer-actions {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, var(--bg) 60%, transparent);
+  padding: var(--space-4) 0 var(--space-2);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
